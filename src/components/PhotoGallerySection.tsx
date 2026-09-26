@@ -26,7 +26,7 @@ export const PhotoGallerySection: React.FC<PhotoGallerySectionProps> = ({
   const [newYarnType, setNewYarnType] = useState('Botanical Organic Cotton');
   const [newDescription, setNewDescription] = useState('');
   const [selectedSampleImage, setSelectedSampleImage] = useState<string>(
-    '/src/assets/images/article_granny_square_1790433589295.jpg'
+    '/images/article_granny_square_1790433589295.jpg'
   );
 
   const categories = [
@@ -307,14 +307,14 @@ export const PhotoGallerySection: React.FC<PhotoGallerySectionProps> = ({
                 </label>
                 <div className="grid grid-cols-4 gap-2">
                   {[
-                    '/src/assets/images/article_granny_square_1790433589295.jpg',
-                    '/src/assets/images/article_amigurumi_botanical_1790433600852.jpg',
-                    '/src/assets/images/article_chunky_cardigan_1790433611241.jpg',
-                    '/src/assets/images/article_bucket_hat_1790440175101.jpg',
-                    '/src/assets/images/article_lace_shawl_1790440189535.jpg',
-                    '/src/assets/images/article_tapestry_decor_1790440202934.jpg',
-                    '/src/assets/images/article_baby_blanket_1790440214777.jpg',
-                    '/src/assets/images/hero_crochet_artisan_1790433576727.jpg'
+                    '/images/article_granny_square_1790433589295.jpg',
+                    '/images/article_amigurumi_botanical_1790433600852.jpg',
+                    '/images/article_chunky_cardigan_1790433611241.jpg',
+                    '/images/article_bucket_hat_1790440175101.jpg',
+                    '/images/article_lace_shawl_1790440189535.jpg',
+                    '/images/article_tapestry_decor_1790440202934.jpg',
+                    '/images/article_baby_blanket_1790440214777.jpg',
+                    '/images/hero_crochet_artisan_1790433576727.jpg'
                   ].map((imgSrc, idx) => (
                     <button
                       key={idx}
