@@ -17,7 +17,6 @@ import { RowCounterModal } from './components/RowCounterModal';
 import { YarnCalculatorModal } from './components/YarnCalculatorModal';
 import { HookConversionModal } from './components/HookConversionModal';
 import { HookConversionSection } from './components/HookConversionSection';
-import { EditorialPoliciesModal, PolicyTab } from './components/EditorialPoliciesModal';
 
 export default function App() {
   const [articles] = useState<Article[]>(ARTICLES_DATA);
@@ -40,8 +39,6 @@ export default function App() {
   const [isRowCounterOpen, setIsRowCounterOpen] = useState<boolean>(false);
   const [isYarnCalculatorOpen, setIsYarnCalculatorOpen] = useState<boolean>(false);
   const [isHookConverterOpen, setIsHookConverterOpen] = useState<boolean>(false);
-  const [isPolicyModalOpen, setIsPolicyModalOpen] = useState<boolean>(false);
-  const [policyModalTab, setPolicyModalTab] = useState<PolicyTab>('privacy');
 
   // Sync saved articles to localStorage
   useEffect(() => {
@@ -188,12 +185,7 @@ export default function App() {
       </main>
 
       {/* Editorial Footer */}
-      <Footer 
-        onOpenPolicyModal={(tab) => {
-          setPolicyModalTab(tab);
-          setIsPolicyModalOpen(true);
-        }}
-      />
+      <Footer />
 
       {/* Article Reader Modal with Row Counter & Checklist */}
       <ArticleModal
@@ -227,13 +219,6 @@ export default function App() {
       <HookConversionModal
         isOpen={isHookConverterOpen}
         onClose={() => setIsHookConverterOpen(false)}
-      />
-
-      {/* Google AdSense & Publisher Compliance Policies Modal */}
-      <EditorialPoliciesModal
-        isOpen={isPolicyModalOpen}
-        onClose={() => setIsPolicyModalOpen(false)}
-        initialTab={policyModalTab}
       />
 
     </div>

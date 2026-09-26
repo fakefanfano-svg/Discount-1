@@ -1,10 +1,6 @@
 import React from 'react';
 
-interface FooterProps {
-  onOpenPolicyModal?: (tab: 'privacy' | 'terms' | 'editorial' | 'adsense') => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onOpenPolicyModal }) => {
+export const Footer: React.FC = () => {
   return (
     <footer className="bg-[#FAF8F5] border-t border-stone-200 py-12 text-stone-600 font-sans text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,12 +68,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicyModal }) => {
               Every pattern published in our journal is physically swatched, stress-tested, and verified by experienced makers with genuine gauge samples and zero synthetic AI shortcuts.
             </p>
             <div className="mt-3">
-              <button
-                onClick={() => onOpenPolicyModal?.('adsense')}
-                className="text-amber-900 hover:text-amber-950 font-medium text-[11px] underline underline-offset-2 cursor-pointer"
+              <a
+                href="/about.html"
+                className="text-amber-900 hover:text-amber-950 font-medium text-[11px] underline underline-offset-2"
               >
                 Ad & Affiliate Transparency Disclosure →
-              </button>
+              </a>
             </div>
           </div>
 
@@ -89,26 +85,17 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicyModal }) => {
             © 2026 Crochet Simply (crochetsimply.online). All rights reserved.
           </div>
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => onOpenPolicyModal?.('privacy')}
-              className="hover:text-stone-700 transition-colors cursor-pointer"
-            >
+            <a href="/privacy-policy.html" className="hover:text-stone-700 transition-colors">
               Privacy & Cookies
-            </button>
+            </a>
             <span aria-hidden="true">·</span>
-            <button
-              onClick={() => onOpenPolicyModal?.('terms')}
-              className="hover:text-stone-700 transition-colors cursor-pointer"
-            >
+            <a href="/terms.html" className="hover:text-stone-700 transition-colors">
               Terms of Craft
-            </button>
+            </a>
             <span aria-hidden="true">·</span>
-            <button
-              onClick={() => onOpenPolicyModal?.('editorial')}
-              className="hover:text-stone-700 transition-colors cursor-pointer"
-            >
-              Editorial Desk & E-E-A-T
-            </button>
+            <a href="/about.html" className="hover:text-stone-700 transition-colors">
+              About & Editorial Desk
+            </a>
           </div>
         </div>
 

@@ -109,7 +109,7 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="relative rounded-2xl overflow-hidden bg-stone-100 border border-stone-200/90 shadow-md group">
               <div className="aspect-[4/3] sm:aspect-[5/4] w-full overflow-hidden">
                 <img
-                  src="/src/assets/images/hero_crochet_artisan_1790433576727.jpg"
+                  src="/images/hero_crochet_artisan_1790433576727.jpg"
                   alt="Flat-lay of artisan wooden crochet hooks, unbleached cotton yarn skeins, and blocked stitch swatches"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter saturate-[0.98]"
