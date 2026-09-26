@@ -1,0 +1,6 @@
+{
+  "name": "CrochetSimply",
+  "description": "CrochetSimply — The premier digital crochet publication with free step-by-step patterns for all skill levels, high-res visual gallery, stitch conversion charts, and interactive maker tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #292524;
+    background-color: #FAF8F5;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Newsreader', Georgia, serif;
+  }
+}
+
+/* Custom smooth scroll and utility helpers */
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #FED7AA;
+  color: #431407;
+}
+
+/* Print styles for clean, ink-saving physical pattern printing */
+@media print {
+  /* Set pure white background and true black text */
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Hide background elements, navigation bars, headers, footers, and modal overlays */
+  header,
+  footer,
+  main,
+  #articles,
+  #gallery,
+  #stitch-library,
+  #techniques,
+  #faq,
+  #hook-converter-tool,
+  .print-hidden,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset fixed modal overlay to standard in-flow document */
+  .printable-modal-overlay {
+    position: static !important;
+    inset: auto !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    display: block !important;
+    z-index: auto !important;
+  }
+
+  .printable-modal-card {
+    position: static !important;
+    max-height: none !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .printable-modal-body {
+    overflow: visible !important;
+    max-height: none !important;
+    padding: 0 !important;
+  }
+
+  /* Avoid awkward page breaks inside step cards and material lists */
+  .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: #000000 !important;
+  }
+}
