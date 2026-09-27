@@ -267,7 +267,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '8 min read',
     date: 'Sep 18, 2026',
     difficulty: 'Intermediate',
-    coverImage: '/src/assets/images/article_bucket_hat_1790440175101.jpg',
+    coverImage: '/src/assets/images/crochet_summer_bralette_1790499380617.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -393,7 +393,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '6 min read',
     date: 'Sep 14, 2026',
     difficulty: 'Beginner',
-    coverImage: '/src/assets/images/article_amigurumi_botanical_1790433600852.jpg',
+    coverImage: '/src/assets/images/crochet_whale_amigurumi_1790499368237.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -581,7 +581,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '8 min read',
     date: 'Sep 26, 2026',
     difficulty: 'Beginner',
-    coverImage: '/src/assets/images/hero_crochet_artisan_1790433576727.jpg',
+    coverImage: '/src/assets/images/crochet_hooks_collection_1790499392162.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -637,7 +637,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '9 min read',
     date: 'Sep 21, 2026',
     difficulty: 'Beginner',
-    coverImage: '/src/assets/images/article_lace_shawl_1790440189535.jpg',
+    coverImage: '/src/assets/images/crochet_chart_diagram_1790499404376.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -690,13 +690,13 @@ export const ARTICLES_DATA: Article[] = [
   {
     id: 'crochet-vs-knitting-complete-comparison-guide',
     slug: 'crochet-vs-knitting-complete-comparison-guide',
-    title: 'Crochet vs. Knitting: Which is Easier to Learn in 2026? A Complete Guide',
+    title: 'Crochet vs. Knitting: Which is Easier to Learn? A Complete Guide',
     subtitle: 'Speed, yarn consumption, machine automation, versatility, and ergonomics: everything beginners need to decide.',
     category: 'Yarn & Care',
     readTime: '10 min read',
     date: 'Sep 26, 2026',
     difficulty: 'Beginner',
-    coverImage: '/src/assets/images/hero_crochet_artisan_1790433576727.jpg',
+    coverImage: '/src/assets/images/crochet_versus_knitting_1790499416871.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -755,7 +755,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '9 min read',
     date: 'Sep 23, 2026',
     difficulty: 'Intermediate',
-    coverImage: '/src/assets/images/article_bucket_hat_1790440175101.jpg',
+    coverImage: '/src/assets/images/crochet_yarn_skeins_1790499429513.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -810,7 +810,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '7 min read',
     date: 'Sep 19, 2026',
     difficulty: 'Beginner',
-    coverImage: '/src/assets/images/hero_crochet_artisan_1790433576727.jpg',
+    coverImage: '/src/assets/images/crochet_hands_ergonomics_1790499441471.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -868,7 +868,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '6 min read',
     date: 'Sep 25, 2026',
     difficulty: 'Beginner',
-    coverImage: '/src/assets/images/article_home_coasters_1790442415569.jpg',
+    coverImage: '/src/assets/images/crochet_spa_washcloths_1790499451367.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -927,7 +927,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '7 min read',
     date: 'Sep 24, 2026',
     difficulty: 'Beginner',
-    coverImage: '/src/assets/images/article_granny_square_1790433589295.jpg',
+    coverImage: '/src/assets/images/crochet_market_bag_1790499463408.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -985,7 +985,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '8 min read',
     date: 'Sep 23, 2026',
     difficulty: 'Intermediate',
-    coverImage: '/src/assets/images/article_ribbed_beanie_1790442399653.jpg',
+    coverImage: '/src/assets/images/crochet_infinity_cowl_1790499476249.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -1101,7 +1101,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '7 min read',
     date: 'Sep 21, 2026',
     difficulty: 'Intermediate',
-    coverImage: '/src/assets/images/article_amigurumi_botanical_1790433600852.jpg',
+    coverImage: '/src/assets/images/crochet_bear_amigurumi_1790499488101.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -1164,7 +1164,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '6 min read',
     date: 'Sep 20, 2026',
     difficulty: 'Intermediate',
-    coverImage: '/src/assets/images/article_amigurumi_botanical_1790433600852.jpg',
+    coverImage: '/src/assets/images/crochet_mushroom_cluster_1790499500241.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -1227,7 +1227,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '8 min read',
     date: 'Sep 19, 2026',
     difficulty: 'Intermediate',
-    coverImage: '/src/assets/images/article_tapestry_decor_1790440202934.jpg',
+    coverImage: '/src/assets/images/crochet_storage_basket_1790499512489.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -1285,7 +1285,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '9 min read',
     date: 'Sep 26, 2026',
     difficulty: 'Beginner',
-    coverImage: '/src/assets/images/hero_crochet_artisan_1790433576727.jpg',
+    coverImage: '/src/assets/images/crochet_blocking_mats_1790499524683.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',
@@ -1396,7 +1396,7 @@ export const ARTICLES_DATA: Article[] = [
   {
     id: 'natural-fiber-dyeing-ethical-wool-sourcing',
     slug: 'natural-fiber-dyeing-ethical-wool-sourcing',
-    title: 'The Science of Natural Fiber Dyeing & Ethical Wool Sourcing in 2026',
+    title: 'The Science of Natural Fiber Dyeing & Ethical Wool Sourcing',
     subtitle: 'Botanical extracts, non-toxic mordants, mulesing-free certifications, and the true cost of regenerative agriculture.',
     category: 'Yarn & Care',
     readTime: '10 min read',
@@ -1519,7 +1519,7 @@ export const ARTICLES_DATA: Article[] = [
     readTime: '9 min read',
     date: 'Sep 26, 2026',
     difficulty: 'Intermediate',
-    coverImage: '/src/assets/images/hero_crochet_artisan_1790433576727.jpg',
+    coverImage: '/src/assets/images/crochet_pricing_workspace_1790499536792.jpg',
     author: {
       name: 'CrochetSimply',
       role: 'Master Artisan & Editorial Studio',

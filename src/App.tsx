@@ -17,6 +17,7 @@ import { RowCounterModal } from './components/RowCounterModal';
 import { YarnCalculatorModal } from './components/YarnCalculatorModal';
 import { HookConversionModal } from './components/HookConversionModal';
 import { HookConversionSection } from './components/HookConversionSection';
+import { KeywordDirectory } from './components/KeywordDirectory';
 import { EditorialPoliciesModal, PolicyTab } from './components/EditorialPoliciesModal';
 
 export default function App() {
@@ -179,6 +180,18 @@ export default function App() {
 
         {/* Core Workshop Techniques */}
         <TechniquesGrid />
+
+        {/* Google SEO Master Keyword Directory & Knowledge Base */}
+        <KeywordDirectory
+          onSearchKeyword={(kw) => {
+            setSearchQuery(kw);
+            setActiveCategory('All');
+            scrollToArticles();
+          }}
+          onOpenHookConverter={() => setIsHookConverterOpen(true)}
+          onOpenYarnCalculator={() => setIsYarnCalculatorOpen(true)}
+          onOpenRowCounter={() => setIsRowCounterOpen(true)}
+        />
 
         {/* SEO Knowledge Base & FAQ */}
         <SeoFaqSection />

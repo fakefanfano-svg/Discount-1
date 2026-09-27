@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Search, X, Menu, ChevronDown, Ruler, Hash, Calculator, Bookmark 
+  X, Menu, ChevronDown, Ruler, Hash, Calculator 
 } from 'lucide-react';
+import { Logo } from './Logo';
 
 interface HeaderProps {
   onOpenRowCounter: () => void;
   onOpenYarnCalculator: () => void;
   onOpenHookConverter: () => void;
-  savedArticlesCount: number;
-  onSelectCategory: (category: string) => void;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
+  savedArticlesCount?: number;
+  onSelectCategory?: (category: string) => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -24,11 +25,9 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const toolsRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,12 +46,6 @@ export const Header: React.FC<HeaderProps> = ({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  useEffect(() => {
-    if (isSearchOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, [isSearchOpen]);
 
   // Lock scroll on mobile menu
   useEffect(() => {
@@ -82,13 +75,13 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="h-16 sm:h-18 flex items-center justify-between gap-6">
             
-            {/* MINIMALIST LOGO */}
+            {/* ARTISAN LOGO */}
             <a 
               href="/" 
-              className="font-serif text-2xl font-normal tracking-tight text-stone-900 hover:text-stone-600 transition-colors shrink-0"
+              className="shrink-0 transition-opacity hover:opacity-90"
               aria-label="CrochetSimply Home"
             >
-              CrochetSimply
+              <Logo variant="header" />
             </a>
 
             {/* MINIMALIST DESKTOP NAVIGATION */}
@@ -172,54 +165,7 @@ export const Header: React.FC<HeaderProps> = ({
             </nav>
 
             {/* RIGHT UTILITIES */}
-            <div className="flex items-center gap-4 text-xs font-sans text-stone-600">
-              
-              {/* Search Toggle / Input */}
-              {isSearchOpen ? (
-                <div className="flex items-center gap-2 border-b border-stone-400 pb-0.5 w-36 sm:w-48 animate-in fade-in duration-150">
-                  <Search className="w-3.5 h-3.5 text-stone-400 shrink-0" />
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full bg-transparent text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none"
-                  />
-                  <button
-                    onClick={() => {
-                      setIsSearchOpen(false);
-                      onSearchChange('');
-                    }}
-                    className="text-stone-400 hover:text-stone-700"
-                    aria-label="Close search"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setIsSearchOpen(true)}
-                  className="hover:text-stone-950 transition-colors p-1 cursor-pointer"
-                  title="Search patterns"
-                  aria-label="Open search"
-                >
-                  <Search className="w-4 h-4 text-stone-600" />
-                </button>
-              )}
-
-              {/* Saved indicator */}
-              <a
-                href="#articles"
-                className="hover:text-stone-950 transition-colors flex items-center gap-1.5 cursor-pointer"
-                title="View saved patterns"
-              >
-                <Bookmark className="w-3.5 h-3.5 text-stone-500" />
-                <span className="font-mono text-[11px] text-stone-500">
-                  {savedArticlesCount}
-                </span>
-              </a>
-
+            <div className="flex items-center gap-3 text-xs font-sans text-stone-600">
               {/* Minimalist Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -243,18 +189,6 @@ export const Header: React.FC<HeaderProps> = ({
       {isMobileMenuOpen && (
         <div className="fixed inset-0 top-16 z-30 md:hidden bg-[#FAF8F5] p-6 sm:p-8 flex flex-col justify-between animate-in fade-in duration-200">
           <div className="space-y-6 pt-4">
-            
-            {/* Search in mobile */}
-            <div className="border-b border-stone-300 pb-2 flex items-center gap-2">
-              <Search className="w-4 h-4 text-stone-400" />
-              <input
-                type="text"
-                placeholder="Search articles and stitches..."
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full bg-transparent text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none"
-              />
-            </div>
 
             {/* Editorial Nav Items */}
             <nav className="flex flex-col space-y-4 font-serif text-2xl text-stone-900 pt-2">
@@ -322,9 +256,8 @@ export const Header: React.FC<HeaderProps> = ({
 
           </div>
 
-          <div className="pt-6 border-t border-stone-200 text-xs text-stone-400 font-mono flex items-center justify-between">
+          <div className="pt-6 border-t border-stone-200 text-xs text-stone-400 font-mono">
             <span>CrochetSimply</span>
-            <span>Edition 2026</span>
           </div>
         </div>
       )}

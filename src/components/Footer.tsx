@@ -1,4 +1,5 @@
 import React from 'react';
+import { Logo } from './Logo';
 
 interface FooterProps {
   onOpenPolicyModal?: (tab: 'privacy' | 'terms' | 'editorial' | 'adsense') => void;
@@ -13,14 +14,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicyModal }) => {
           
           {/* Brand info */}
           <div className="md:col-span-2 space-y-3">
-            <span className="font-serif text-2xl font-medium text-stone-900 block">
-              CrochetSimply
-            </span>
-            <p className="text-stone-500 max-w-sm leading-relaxed">
+            <Logo variant="footer" />
+            <p className="text-stone-500 max-w-sm leading-relaxed mt-2">
               The premier independent digital journal dedicated to modern fiber crafts, natural yarn preservation, step-by-step masterclasses, and tactile textile photography.
             </p>
             <div className="text-[11px] text-stone-400 font-mono">
-              crochetsimply.online · Digital Edition 2026
+              crochetsimply.online
             </div>
           </div>
 
@@ -53,6 +52,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicyModal }) => {
               <li>
                 <a href="#techniques" className="hover:text-stone-900 transition-colors">
                   Workshop Fundamentals
+                </a>
+              </li>
+              <li>
+                <a href="#keyword-index" className="hover:text-stone-900 transition-colors font-medium text-amber-900">
+                  Directorio SEO & Glosario de Palabras Clave
                 </a>
               </li>
               <li>

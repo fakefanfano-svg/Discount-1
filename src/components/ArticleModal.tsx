@@ -30,9 +30,71 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
   const [activeRound, setActiveRound] = useState<number>(1);
   const totalSteps = article.steps.length;
 
+  // Persistent completed steps tracking for this pattern
+  const [completedSteps, setCompletedSteps] = useState<Record<number, boolean>>(() => {
+    if (!article) return {};
+    try {
+      const saved = localStorage.getItem(`crochet_step_progress_${article.id}`);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  // Re-sync completed steps if user opens a different article
+  useEffect(() => {
+    if (!article) return;
+    try {
+      const saved = localStorage.getItem(`crochet_step_progress_${article.id}`);
+      setCompletedSteps(saved ? JSON.parse(saved) : {});
+    } catch {
+      setCompletedSteps({});
+    }
+  }, [article?.id]);
+
+  const toggleStepCompleted = (index: number) => {
+    setCompletedSteps(prev => {
+      const next = {
+        ...prev,
+        [index]: !prev[index]
+      };
+      try {
+        if (article) {
+          localStorage.setItem(`crochet_step_progress_${article.id}`, JSON.stringify(next));
+        }
+      } catch {}
+      return next;
+    });
+  };
+
+  const markAllStepsCompleted = () => {
+    if (!article) return;
+    const allDone: Record<number, boolean> = {};
+    article.steps.forEach((_, idx) => {
+      allDone[idx] = true;
+    });
+    setCompletedSteps(allDone);
+    try {
+      localStorage.setItem(`crochet_step_progress_${article.id}`, JSON.stringify(allDone));
+    } catch {}
+  };
+
+  const resetAllSteps = () => {
+    if (!article) return;
+    setCompletedSteps({});
+    try {
+      localStorage.removeItem(`crochet_step_progress_${article.id}`);
+    } catch {}
+  };
+
+  const completedStepsCount = article.steps.filter((_, idx) => !!completedSteps[idx]).length;
+  const progressPercent = totalSteps > 0 ? Math.round((completedStepsCount / totalSteps) * 100) : 0;
+  const isAllCompleted = totalSteps > 0 && completedStepsCount === totalSteps;
+
   // Print-friendly layout state
   const [isPrintFriendly, setIsPrintFriendly] = useState<boolean>(false);
   const [includePhotoInPrint, setIncludePhotoInPrint] = useState<boolean>(false);
+  const [copiedLink, setCopiedLink] = useState<boolean>(false);
 
   const toggleMaterial = (index: number) => {
     setCheckedMaterials(prev => ({
@@ -52,7 +114,8 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
   const handleShare = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(window.location.href);
-      alert('Article link copied to clipboard!');
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
     }
   };
 
@@ -90,7 +153,30 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             )}
             <span aria-hidden="true" className="text-stone-300">·</span>
             <span className="truncate font-serif text-stone-800">{article.title}</span>
+
+            {/* Persistent Topbar Progress Indicator */}
+            {totalSteps > 0 && !isPrintFriendly && (
+              <div className="hidden md:flex items-center gap-2 pl-3 ml-2 border-l border-stone-300 text-stone-600 shrink-0">
+                <span className="text-[11px] font-mono">
+                  Progress: <strong className="text-stone-900 font-bold">{completedStepsCount}/{totalSteps}</strong> ({progressPercent}%)
+                </span>
+                <div className="w-16 h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                  <div 
+                    className={`h-full transition-all duration-300 ${isAllCompleted ? 'bg-emerald-500' : 'bg-amber-600'}`}
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
+
+          {/* Copied Link Toast */}
+          {copiedLink && (
+            <div className="absolute top-14 left-1/2 -translate-x-1/2 bg-stone-900 text-white text-xs px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5 animate-in fade-in z-50">
+              <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[3]" />
+              <span>Article link copied to clipboard!</span>
+            </div>
+          )}
 
           <div className="flex items-center gap-2 shrink-0">
             {/* PRINT FRIENDLY BUTTON */}
@@ -307,44 +393,64 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
 
               {/* STEP-BY-STEP PATTERN INSTRUCTIONS WITH PHYSICAL CHECKBOXES */}
               <div className="my-6 space-y-4">
-                <div className="border-b-2 border-black pb-1">
-                  <h3 className="font-mono text-base font-bold uppercase tracking-wider text-black">
-                    Step-by-Step Round Instructions
-                  </h3>
-                  <span className="text-xs font-mono text-stone-600">
-                    Follow consecutively; mark box upon completing each round/step
-                  </span>
+                <div className="border-b-2 border-black pb-1 flex items-baseline justify-between flex-wrap gap-2">
+                  <div>
+                    <h3 className="font-mono text-base font-bold uppercase tracking-wider text-black">
+                      Step-by-Step Round Instructions
+                    </h3>
+                    <span className="text-xs font-mono text-stone-600">
+                      Follow consecutively; mark box upon completing each round/step
+                    </span>
+                  </div>
+                  {totalSteps > 0 && (
+                    <span className="font-mono text-xs font-bold text-black border border-black px-2 py-0.5">
+                      Progress: {completedStepsCount}/{totalSteps} ({progressPercent}%)
+                    </span>
+                  )}
                 </div>
 
-                {article.steps.map((step, idx) => (
-                  <div key={idx} className="print-avoid-break border border-black p-3.5 space-y-1.5">
-                    <div className="flex items-baseline justify-between border-b border-stone-300 pb-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-sm font-bold select-none text-black">
-                          [  ]
-                        </span>
-                        <h4 className="font-sans font-bold text-sm text-black">
-                          {step.title}
-                        </h4>
+                {article.steps.map((step, idx) => {
+                  const isDone = !!completedSteps[idx];
+                  return (
+                    <div key={idx} className="print-avoid-break border border-black p-3.5 space-y-1.5">
+                      <div className="flex items-baseline justify-between border-b border-stone-300 pb-1">
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => toggleStepCompleted(idx)}
+                            className="font-mono text-sm font-bold select-none text-black hover:text-amber-800 cursor-pointer print:cursor-default"
+                            title="Click to check or uncheck step"
+                          >
+                            {isDone ? '[X]' : '[  ]'}
+                          </button>
+                          <h4 className={`font-sans font-bold text-sm text-black ${isDone ? 'line-through text-stone-600' : ''}`}>
+                            {step.title}
+                          </h4>
+                          {isDone && (
+                            <span className="text-[10px] font-mono uppercase font-bold text-black print:hidden">
+                              (Completed)
+                            </span>
+                          )}
+                        </div>
+                        {step.stitchesCount && (
+                          <span className="text-xs font-mono font-bold text-black border border-black px-1.5 py-0.2">
+                            {step.stitchesCount}
+                          </span>
+                        )}
                       </div>
-                      {step.stitchesCount && (
-                        <span className="text-xs font-mono font-bold text-black border border-black px-1.5 py-0.2">
-                          {step.stitchesCount}
-                        </span>
+
+                      <p className="text-xs sm:text-sm font-sans text-black leading-relaxed">
+                        {step.instruction}
+                      </p>
+
+                      {step.tip && (
+                        <div className="mt-1 text-xs font-mono text-stone-800 border-l border-black pl-2">
+                          <strong>Technique Note:</strong> {step.tip}
+                        </div>
                       )}
                     </div>
-
-                    <p className="text-xs sm:text-sm font-sans text-black leading-relaxed">
-                      {step.instruction}
-                    </p>
-
-                    {step.tip && (
-                      <div className="mt-1 text-xs font-mono text-stone-800 border-l border-black pl-2">
-                        <strong>Technique Note:</strong> {step.tip}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* FINISHING & CARE ADVICE */}
@@ -576,36 +682,216 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
                   </div>
                 </div>
 
+                {/* ========================================================== */}
+                {/* PROJECT PROGRESS VISUAL INDICATOR                          */}
+                {/* ========================================================== */}
+                {totalSteps > 0 && (
+                  <div className="my-6 p-5 sm:p-6 bg-stone-900 text-white rounded-2xl shadow-md border border-stone-800">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-800">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isAllCompleted ? 'bg-emerald-500 text-stone-950 shadow-md' : 'bg-stone-800 text-amber-400'
+                        }`}>
+                          {isAllCompleted ? <Award className="w-5 h-5 stroke-[2.5]" /> : <ListChecks className="w-5 h-5" />}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="font-serif text-lg font-semibold tracking-tight text-white">
+                              Project Progress
+                            </h3>
+                            {isAllCompleted && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-sans font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full uppercase tracking-wider">
+                                <Sparkles className="w-3 h-3" />
+                                100% Completed
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-stone-400 font-sans mt-0.5">
+                            Mark off individual completed rows or steps as you stitch
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Percentage & Quick Actions */}
+                      <div className="flex items-center gap-4 self-start sm:self-auto shrink-0">
+                        <div className="text-right">
+                          <div className="font-mono text-2xl font-bold text-white leading-none">
+                            {progressPercent}%
+                          </div>
+                          <div className="text-[11px] font-sans text-stone-400 mt-1">
+                            {completedStepsCount} of {totalSteps} steps
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 border-l border-stone-800 pl-3">
+                          {completedStepsCount > 0 && (
+                            <button
+                              type="button"
+                              onClick={resetAllSteps}
+                              className="p-1.5 rounded-lg text-stone-400 hover:text-white hover:bg-stone-800 text-xs transition-colors cursor-pointer"
+                              title="Reset all marked steps"
+                            >
+                              <RotateCcw className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                          {completedStepsCount < totalSteps && (
+                            <button
+                              type="button"
+                              onClick={markAllStepsCompleted}
+                              className="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-sans font-medium transition-colors cursor-pointer border border-stone-700/60"
+                              title="Mark all steps as completed"
+                            >
+                              Mark all done
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Visual Progress Bar */}
+                    <div className="mt-4">
+                      <div className="w-full bg-stone-800 h-2.5 rounded-full overflow-hidden p-0.5">
+                        <div 
+                          className={`h-full rounded-full transition-all duration-300 ${
+                            isAllCompleted 
+                              ? 'bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.5)]' 
+                              : 'bg-gradient-to-r from-amber-600 via-amber-500 to-emerald-400'
+                          }`}
+                          style={{ width: `${progressPercent}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Step-by-Step Interactive Quick Track Pips */}
+                    <div className="mt-4 pt-3 border-t border-stone-800/80">
+                      <div className="text-[11px] font-sans font-medium text-stone-400 mb-2 flex items-center justify-between">
+                        <span>Quick Row Tracker:</span>
+                        <span className="text-[10px] text-stone-500">Click to toggle round completion</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {article.steps.map((step, idx) => {
+                          const isDone = !!completedSteps[idx];
+                          const isCurrent = activeRound === idx + 1;
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => toggleStepCompleted(idx)}
+                              className={`group relative flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+                                isDone
+                                  ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-900'
+                                  : isCurrent
+                                    ? 'bg-amber-900/60 text-amber-200 border border-amber-500/50 hover:bg-amber-800'
+                                    : 'bg-stone-800 text-stone-400 border border-stone-700/60 hover:bg-stone-700 hover:text-stone-200'
+                              }`}
+                              title={`Step ${idx + 1}: ${step.title} (${isDone ? 'Completed' : 'Click to mark done'})`}
+                            >
+                              {isDone ? (
+                                <Check className="w-3 h-3 text-emerald-400 stroke-[3]" />
+                              ) : (
+                                <span className="w-1.5 h-1.5 rounded-full bg-stone-500 group-hover:bg-amber-400" />
+                              )}
+                              <span>R{idx + 1}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Celebration Banner when 100% completed */}
+                    {isAllCompleted && (
+                      <div className="mt-4 p-3 bg-emerald-900/40 border border-emerald-500/40 rounded-xl flex items-center gap-3 text-emerald-200 text-xs font-sans animate-in fade-in slide-in-from-top-2 duration-300">
+                        <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>
+                          <strong>Project complete! 🎉</strong> You've successfully marked off all {totalSteps} rounds of this pattern. Outstanding artisan work!
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Pattern Step-by-Step Instructions */}
-                <div className="space-y-6 pt-4">
-                  <h3 className="font-serif text-2xl font-medium text-stone-900 pb-2 border-b border-stone-200">
-                    Round-by-Round Pattern Instructions
-                  </h3>
+                <div className="space-y-6 pt-2">
+                  <div className="flex items-center justify-between pb-2 border-b border-stone-200">
+                    <h3 className="font-serif text-2xl font-medium text-stone-900">
+                      Round-by-Round Pattern Instructions
+                    </h3>
+                    <span className="text-xs text-stone-500 font-sans">
+                      Check box on each card to mark row completed
+                    </span>
+                  </div>
 
                   {article.steps.map((step, idx) => {
                     const stepNum = idx + 1;
                     const isCurrent = activeRound === stepNum;
+                    const isDone = !!completedSteps[idx];
                     return (
                       <div
                         key={idx}
                         className={`p-5 rounded-xl border transition-all ${
-                          isCurrent 
-                            ? 'bg-amber-50/40 border-amber-300 shadow-xs' 
-                            : 'bg-white border-stone-200/90'
+                          isDone
+                            ? 'bg-emerald-50/30 border-emerald-300/80 shadow-2xs'
+                            : isCurrent 
+                              ? 'bg-amber-50/40 border-amber-300 shadow-xs' 
+                              : 'bg-white border-stone-200/90'
                         }`}
                       >
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-serif text-lg font-medium text-stone-900">
-                            {step.title}
-                          </h4>
-                          {step.stitchesCount && (
-                            <span className="text-xs font-mono text-stone-500 bg-stone-100 px-2 py-0.5 rounded">
-                              {step.stitchesCount}
-                            </span>
-                          )}
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div className="flex items-start gap-3">
+                            {/* Interactive Step Checkbox */}
+                            <button
+                              type="button"
+                              onClick={() => toggleStepCompleted(idx)}
+                              className={`mt-0.5 w-6 h-6 rounded-lg border flex items-center justify-center transition-all cursor-pointer shrink-0 ${
+                                isDone
+                                  ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs'
+                                  : 'bg-white border-stone-300 text-transparent hover:border-amber-600 hover:text-stone-300'
+                              }`}
+                              title={isDone ? 'Mark as incomplete' : 'Mark row as completed'}
+                            >
+                              <Check className={`w-3.5 h-3.5 stroke-[3] transition-transform ${isDone ? 'scale-100' : 'scale-75'}`} />
+                            </button>
+
+                            <div>
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h4 className={`font-serif text-lg font-medium transition-colors ${
+                                  isDone ? 'text-stone-900' : 'text-stone-900'
+                                }`}>
+                                  {step.title}
+                                </h4>
+                                {isDone && (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-sans font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    <Check className="w-2.5 h-2.5 stroke-[3]" />
+                                    Completed
+                                  </span>
+                                )}
+                              </div>
+                              {step.stitchesCount && (
+                                <span className="text-xs font-mono text-stone-500 bg-stone-100 px-2 py-0.5 rounded mt-1 inline-block">
+                                  {step.stitchesCount}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Quick button to set as current active step */}
+                          <button
+                            type="button"
+                            onClick={() => setActiveRound(stepNum)}
+                            className={`px-2 py-1 text-[11px] font-mono rounded border transition-colors cursor-pointer shrink-0 ${
+                              isCurrent
+                                ? 'bg-amber-800 text-white border-amber-800 font-semibold'
+                                : 'bg-stone-50 hover:bg-stone-100 text-stone-600 border-stone-200'
+                            }`}
+                            title="Set as active round for counter"
+                          >
+                            {isCurrent ? '● Active Round' : `Set Round ${stepNum}`}
+                          </button>
                         </div>
 
-                        <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
+                        <p className={`text-xs sm:text-sm leading-relaxed transition-colors ${
+                          isDone ? 'text-stone-700' : 'text-stone-700'
+                        }`}>
                           {step.instruction}
                         </p>
 

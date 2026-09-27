@@ -83,6 +83,12 @@ export const ArticlesSection: React.FC<ArticlesSectionProps> = ({
     if (showSavedOnly && !savedArticleIds.includes(article.id)) {
       return false;
     }
+    // Prevent repeating the lead cover story in the general archive grid when viewing all unfiltered
+    if (activeCategory === 'All' && !searchQuery.trim() && !showSavedOnly && selectedDifficulty === 'all') {
+      if (article.id === articles[0]?.id) {
+        return false;
+      }
+    }
     // Search query
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
